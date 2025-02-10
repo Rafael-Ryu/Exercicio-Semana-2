@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <title>Exercício do Pássaro</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        // configs basicas
+        var config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            // define as funções que serão executadas
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+        // criando um jogo novo
+        var game = new Phaser.Game(config);
+
+        var passaro;
+
+        function preload() {
+            // da preload na imagem de background pra ela renderizar
+            this.load.image('bg', 'assets/bg_space.png');
+            // da preload no sprite do passáro
+            this.load.spritesheet('bird', 'assets/bird-purple.png', { frameWidth: 75, frameHeight: 75});
+        }
+        function create() {
+            // coloca a imagem no background
+            this.add.image(400, 300, 'bg').setScale(1.2);
+            // coloca a imagem do passáro
+            passaro = this.add.sprite(100, 300, 'bird').setScale(1.3);
+
+            this.anims.create({
+                key: 'fly',
+                frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 7}),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            passaro.anims.play('fly', true);
+        }
+    
+        function update() { 
+            /* EIXO X */
+            // se o passaro estiver na posição 100(posição inicial), a "ida" dele é iniciada
+            if (passaro.x === 100) {
+                passaro.setFlip(false, false);
+                passaro.ida = true;
+            }
+            // enquanto o passaro estiver em uma posição menor que 700(fim) ele continuará indo em direção a posição 700, andando de 5 em 5 pixeis
+            if (passaro.x < 700 && passaro.ida === true) {
+                passaro.x += 5;
+            }
+            // assim que o passaro chega no ponto 700, sua imagem horizontal inverte e a "ida" dele é cancelada
+            if (passaro.x === 700) {
+                passaro.setFlip(true, false);
+                passaro.ida = false;
+            }
+            // a função vê se o passaro está em uma posição maior que 100(fora do inicio) e se a "ida" do passáro foi cancelada, assim ele manda o passaro até a posição 100, de 5 em 5 pixeis
+            if (passaro.x > 100 && passaro.ida === false) {
+                passaro.x -= 5;
+            }
+
+            /* EIXO Y */
+            if (passaro.y === 300) {
+                passaro.descida = true;
+            }
+
+            if (passaro.y < 500 && passaro.descida === true) {
+                passaro.y += 5;
+            }
+
+            if (passaro.y === 500) {
+                passaro.descida = false;
+            }
+
+            if (passaro.y > 100 && passaro.descida === false) {
+                passaro.y -= 5;
+            }
+        }
+    
+    </script>
+
+</body>
+</html>
+
+
