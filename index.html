@@ -79,19 +79,20 @@
             }
 
             /* EIXO Y */
+            // se o passaro estiver na posição 300(inicial), a "descida" é iniciada
             if (passaro.y === 300) {
                 passaro.descida = true;
             }
-
+            // enquanto o passaro estiver em uma posição menor que 500(embaixo) ele continuará indo até chegar lá, de 5 em 5 pixeis
             if (passaro.y < 500 && passaro.descida === true) {
                 passaro.y += 5;
             }
-
+            // assim que o passaro chega na posicao 500(final) a "descida" é cancelada
             if (passaro.y === 500) {
                 passaro.descida = false;
             }
-
-            if (passaro.y > 100 && passaro.descida === false) {
+            // quando o passaro está em uma posição maior que 100 e a "descida" foi cancelada, ele aumenta ele manda o passaro até a posição 300(inicial), de 5 em 5 pixeis
+            if (passaro.y > 300 && passaro.descida === false) {
                 passaro.y -= 5;
             }
         }
